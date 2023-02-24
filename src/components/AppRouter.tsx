@@ -1,14 +1,18 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { privateRoutes, publicRoutes } from '../routes';
+import useTypeSelector from '../hooks/useTypeSelector';
+import { RootState } from '../store';
 
 const AppRouter: React.FC = (): JSX.Element => {
-  const auth: boolean = true;
+  const { isAuth } = useTypeSelector((state: RootState) => {
+    return state.authReducer;
+  });
 
   return (
     <div>
       <Routes>
-        {auth
+        {isAuth
           ? privateRoutes.map((route) => {
               return (
                 <Route

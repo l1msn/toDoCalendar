@@ -2,19 +2,30 @@ import React from 'react';
 import { Layout, Menu, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import RouteNames from '../consts/RouteNames';
+import useTypeSelector from '../hooks/useTypeSelector';
+import { RootState } from '../store';
+import { useDispatch } from 'react-redux';
+import AuthActionsCreators from '../store/actions-creators/auth';
 
 const Navbar: React.FC = (): JSX.Element => {
   const router = useNavigate();
-  const auth: boolean = false;
+
+  const dispatch = useDispatch();
+
+  const { isAuth, user } = useTypeSelector((state: RootState) => {
+    return state.authReducer;
+  });
   return (
     <Layout.Header>
       <Row justify="end">
-        {auth ? (
+        {isAuth ? (
           <Menu theme="dark" mode="horizontal" selectable={false}>
-            <Menu.Item disabled>User</Menu.Item>
+            <Menu.Item disabled key={0}>
+              {user.username}
+            </Menu.Item>
             <Menu.Item
               onClick={(): void => {
-                alert('logout');
+                dispatch<any>(AuthActionsCreators.logout());
               }}
               key={1}
             >
