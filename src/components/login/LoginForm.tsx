@@ -1,13 +1,12 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Alert, Button, Checkbox, Form, Input } from 'antd';
 import rules from '../../utils/rules';
-import { useDispatch } from 'react-redux';
-import AuthActionsCreators from '../../store/actions-creators/auth';
 import useTypeSelector from '../../hooks/useTypeSelector';
 import { RootState } from '../../store';
+import useActions from '../../hooks/useActions';
 
 const LoginForm: React.FC = (): JSX.Element => {
-  const dispatch = useDispatch();
+  const { login } = useActions();
 
   const { error, isLoading } = useTypeSelector((state: RootState) => {
     return state.authReducer;
@@ -17,7 +16,7 @@ const LoginForm: React.FC = (): JSX.Element => {
   const [password, setPassword] = useState<string>('');
 
   function submit() {
-    dispatch<any>(AuthActionsCreators.login(username, password));
+    login(username, password);
   }
 
   return (
